@@ -8,6 +8,9 @@ from setuptools import setup, find_packages
 
 requires = [
 ]
+entry_points = [
+        'm-server = simplefileserver.server:runserver'
+]
 
 setup(
     name='simplefileserver',
@@ -20,5 +23,8 @@ setup(
     url='https://github.com/perfectnewer/simplefileserver',
     include_package_data=True,
     zip_safe=False,
+    entry_points={
+        "console_scripts": entry_points
+    },
     install_requires=requires,
 )

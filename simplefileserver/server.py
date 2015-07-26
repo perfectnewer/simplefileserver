@@ -1,28 +1,30 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
+import argparse
 
 from flask import (
     Flask,
-    send_from_directory
 )
+
+from .dispatcher import init_dispatcher
 
 
 def create_app():
     app = Flask(__name__)
     app.debug = True
+    init_dispatcher(app)
     return app
 
-app = create_app()
-
-
-@app.route('/download/<path:filename>')
-def download(filename):
-    if not filename.startswith('order') or not os.path.isfile(filename):
-        return 'wrong file name'
-    return send_from_directory('.', filename, as_attachment=True)
+def runserver():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--host', default='0.0.0.0')
+    parser.add_argument('--port', default=9095)
+    args = parser.parse_args()
+    app = create_app()
+    app.run(host=args.host, port=int(args.port))
 
 
 if __name__ == '__main__':
+    app = create_app()
     app.run(host='0.0.0.0', port=9095)
